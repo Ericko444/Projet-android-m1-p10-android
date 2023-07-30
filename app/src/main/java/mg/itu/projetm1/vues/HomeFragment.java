@@ -3,10 +3,14 @@ package mg.itu.projetm1.vues;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 import mg.itu.projetm1.R;
 
@@ -25,6 +29,12 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView recyclerView;
+
+    private ArrayList<String> dataSource;
+    private LinearLayoutManager linearLayoutManager;
+    private PlaceItemAdapter placeItemAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -60,7 +70,22 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        dataSource = new ArrayList<>();
+        dataSource.add("Isalo");
+        dataSource.add("Andasibe");
+        dataSource.add("Ranohira");
+        dataSource.add("Ranomafana");
+        dataSource.add("Anakao");
+        dataSource.add("Tsiazompaniry National Park");
+        dataSource.add("Bevalala");
+        dataSource.add("Ambodifasina");
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        recyclerView = rootView.findViewById(R.id.recommendations);
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        placeItemAdapter = new PlaceItemAdapter(dataSource, getActivity());
+        recyclerView.setAdapter(placeItemAdapter);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return rootView;
     }
 }

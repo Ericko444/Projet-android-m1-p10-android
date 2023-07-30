@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import com.squareup.picasso.Picasso;
+
 import mg.itu.projetm1.R;
 import mg.itu.projetm1.databinding.ActivityMainBinding;
 
