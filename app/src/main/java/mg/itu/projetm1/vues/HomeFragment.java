@@ -6,13 +6,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import mg.itu.projetm1.R;
+import mg.itu.projetm1.models.Place;
+import mg.itu.projetm1.utils.RetrofitClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,7 +40,7 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
-    private ArrayList<String> dataSource;
+    private ArrayList<Place> dataSource;
     private LinearLayoutManager linearLayoutManager;
     private PlaceItemAdapter placeItemAdapter;
 
@@ -70,22 +78,35 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        dataSource = new ArrayList<>();
-        dataSource.add("Isalo");
-        dataSource.add("Andasibe");
-        dataSource.add("Ranohira");
-        dataSource.add("Ranomafana");
-        dataSource.add("Anakao");
-        dataSource.add("Tsiazompaniry National Park");
-        dataSource.add("Bevalala");
-        dataSource.add("Ambodifasina");
+        dataSource = new ArrayList<Place>();
+
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = rootView.findViewById(R.id.recommendations);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         placeItemAdapter = new PlaceItemAdapter(dataSource, getActivity());
         recyclerView.setAdapter(placeItemAdapter);
+
+        fetchPlaces();
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    private void fetchPlaces(){
+        RetrofitClient.getRetrofitClient().getPlaces().enqueue(new Callback<List<Place>>() {
+            @Override
+            public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
+                if(response.isSuccessful() && response.body() != null){
+                    dataSource.addAll(response.body());
+                    placeItemAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Place>> call, Throwable t) {
+                Toast.makeText(getActivity(), "Error "+t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("ERROR", "onFailure: "+t.getMessage());
+            }
+        });
     }
 }
