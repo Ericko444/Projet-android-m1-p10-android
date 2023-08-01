@@ -8,6 +8,9 @@ import retrofit2.http.GET;
 
 public interface PlaceInterface {
 
-    @GET("/api/places")
-    Call<List<Place>> getPlaces();
+    @GET("/api/recommendations")
+    Call<List<Place>> getPlacesRecommendation();
+
+    @GET("/api/parprovinces")
+    Call<List<Place>> getPlacesParProvince();
 }

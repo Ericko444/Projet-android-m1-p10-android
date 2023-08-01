@@ -38,11 +38,15 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewRecommendation;
+    private RecyclerView recyclerViewParProvince;
 
-    private ArrayList<Place> dataSource;
+    private ArrayList<Place> dataRecommendations;
+    private ArrayList<Place> dataParProvince;
     private LinearLayoutManager linearLayoutManager;
-    private PlaceItemAdapter placeItemAdapter;
+    private LinearLayoutManager linearLayoutManager2;
+    private PlaceItemAdapter placeItemAdapterRecommendation;
+    private PlaceItemAdapter placeItemAdapterParProvince;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -78,27 +82,52 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        dataSource = new ArrayList<Place>();
+        dataRecommendations = new ArrayList<Place>();
+        dataParProvince = new ArrayList<Place>();
 
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        recyclerView = rootView.findViewById(R.id.recommendations);
+        recyclerViewRecommendation = rootView.findViewById(R.id.recommendations);
+        recyclerViewParProvince = rootView.findViewById(R.id.par_province);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        placeItemAdapter = new PlaceItemAdapter(dataSource, getActivity());
-        recyclerView.setAdapter(placeItemAdapter);
+        linearLayoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewRecommendation.setLayoutManager(linearLayoutManager);
+        recyclerViewParProvince.setLayoutManager(linearLayoutManager2);
+        placeItemAdapterRecommendation = new PlaceItemAdapter(dataRecommendations, getActivity());
+        placeItemAdapterParProvince = new PlaceItemAdapter(dataParProvince, getActivity());
+        recyclerViewRecommendation.setAdapter(placeItemAdapterRecommendation);
+        recyclerViewParProvince.setAdapter(placeItemAdapterParProvince);
 
-        fetchPlaces();
+        fetchPlacesRecommendation();
+        fetchPlacesParProvince();
         // Inflate the layout for this fragment
         return rootView;
     }
 
-    private void fetchPlaces(){
-        RetrofitClient.getRetrofitClient().getPlaces().enqueue(new Callback<List<Place>>() {
+    private void fetchPlacesRecommendation(){
+        RetrofitClient.getRetrofitClient().getPlacesRecommendation().enqueue(new Callback<List<Place>>() {
             @Override
             public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
                 if(response.isSuccessful() && response.body() != null){
-                    dataSource.addAll(response.body());
-                    placeItemAdapter.notifyDataSetChanged();
+                    dataRecommendations.addAll(response.body());
+                    placeItemAdapterRecommendation.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Place>> call, Throwable t) {
+                Toast.makeText(getActivity(), "Error "+t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("ERROR", "onFailure: "+t.getMessage());
+            }
+        });
+    }
+
+    private void fetchPlacesParProvince(){
+        RetrofitClient.getRetrofitClient().getPlacesParProvince().enqueue(new Callback<List<Place>>() {
+            @Override
+            public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
+                if(response.isSuccessful() && response.body() != null){
+                    dataParProvince.addAll(response.body());
+                    placeItemAdapterParProvince.notifyDataSetChanged();
                 }
             }
 
