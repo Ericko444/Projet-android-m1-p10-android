@@ -1,5 +1,6 @@
 package mg.itu.projetm1.vues;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -27,7 +28,7 @@ import retrofit2.Response;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemClickListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -95,7 +96,9 @@ public class HomeFragment extends Fragment {
         placeItemAdapterRecommendation = new PlaceItemAdapter(dataRecommendations, getActivity());
         placeItemAdapterParProvince = new PlaceItemAdapter(dataParProvince, getActivity());
         recyclerViewRecommendation.setAdapter(placeItemAdapterRecommendation);
+        placeItemAdapterRecommendation.setOnItemClickListener(HomeFragment.this);
         recyclerViewParProvince.setAdapter(placeItemAdapterParProvince);
+        placeItemAdapterParProvince.setOnItemClickListener(HomeFragment.this);
 
         fetchPlacesRecommendation();
         fetchPlacesParProvince();
@@ -137,5 +140,16 @@ public class HomeFragment extends Fragment {
                 Log.d("ERROR", "onFailure: "+t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent detailIntent = new Intent(getActivity(), PlaceDetailActivity.class);
+        Place clickedItem = dataRecommendations.get(position);
+
+        detailIntent.putExtra("title", clickedItem.getTitle());
+        detailIntent.putExtra("desc", clickedItem.getDesc());
+
+        startActivity(detailIntent);
     }
 }

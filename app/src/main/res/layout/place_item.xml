@@ -24,6 +24,16 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rating="3"
+                style="?android:attr/ratingBarStyleSmall"
+                android:progressTint="#FFCC01"
+                android:id="@+id/smallRating"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                />
         </LinearLayout>
 
         <LinearLayout
