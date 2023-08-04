@@ -9,6 +9,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -62,7 +63,9 @@ public class PlaceDetailActivity extends AppCompatActivity {
         TextView textViewLikes = findViewById(R.id.place_desc);
         TextView textViewTags = findViewById(R.id.place_tags);
         TextView textViewReviews= findViewById(R.id.place_reviews);
-
+        RatingBar notes = findViewById(R.id.smallRating);
+        double moyenneReviews = getMoyenneReviews(reviews);
+        notes.setRating((float) moyenneReviews);
         String textTags = "Tags : ";
         for (String t : tagList
              ) {
@@ -81,6 +84,18 @@ public class PlaceDetailActivity extends AppCompatActivity {
 //        Picasso.get().load(imageUrl).fit().centerInside().into(imageView);
         textViewCreator.setText(title);
         textViewTags.setText(textTags);
-        textViewReviews.setText("3.0 ("+reviews.size()+" reviews)");
+        textViewReviews.setText(""+moyenneReviews+" ("+reviews.size()+" reviews)");
+    }
+
+    private double getMoyenneReviews(List<Review> reviewList){
+        double total = 0;
+        for (Review rv: reviewList
+             ) {
+            total += rv.getNote();
+        }
+        if(total > 0){
+            return Math.ceil((double)total / reviewList.size());
+        }
+        return 0;
     }
 }
