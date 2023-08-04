@@ -153,6 +153,7 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
         detailIntent.putExtra("images", (Serializable) clickedItem.getImages());
         detailIntent.putExtra("tags", (Serializable) clickedItem.getTags());
         detailIntent.putExtra("reviews", (Serializable) clickedItem.getReviews());
+        detailIntent.putExtra("videos", (Serializable) clickedItem.getVideos());
 
         startActivity(detailIntent);
     }

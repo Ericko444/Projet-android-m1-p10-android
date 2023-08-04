@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -25,8 +26,12 @@ import mg.itu.projetm1.R;
 import mg.itu.projetm1.models.Image;
 import mg.itu.projetm1.models.Review;
 import mg.itu.projetm1.models.Tag;
+import mg.itu.projetm1.models.Video;
 
 public class PlaceDetailActivity extends AppCompatActivity {
+
+    private LinearLayout linearLayout;
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
         List<Image> images = (List<Image>) intent.getSerializableExtra("images");
         List<Tag> tags = (List<Tag>) intent.getSerializableExtra("tags");
         List<Review> reviews = (List<Review>) intent.getSerializableExtra("reviews");
+        List<Video> videos = (List<Video>) intent.getSerializableExtra("videos");
 
         ImageCarousel carousel = findViewById(R.id.carousel);
 
@@ -77,9 +83,17 @@ public class PlaceDetailActivity extends AppCompatActivity {
 
         webSettings.setJavaScriptEnabled(true);
 
-        String videoId = "tqy9h2jSW0c";
-        String youtubeUrl = "https://www.youtube.com/embed/" + videoId;
-        video.loadUrl(youtubeUrl);
+        if(videos.size() > 0){
+            String videoId = videos.get(0).getVideo();
+            String youtubeUrl = "https://www.youtube.com/embed/" + videoId;
+            video.loadUrl(youtubeUrl);
+        }
+        else{
+            linearLayout = findViewById(R.id.video_parent);
+            webView = findViewById(R.id.place_video);
+            linearLayout.removeView(webView);
+        }
+
 
 //        Picasso.get().load(imageUrl).fit().centerInside().into(imageView);
         textViewCreator.setText(title);

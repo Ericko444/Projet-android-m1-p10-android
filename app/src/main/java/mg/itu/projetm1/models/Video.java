@@ -1,6 +1,8 @@
 package mg.itu.projetm1.models;
 
-public class Video{
+import java.io.Serializable;
+
+public class Video implements Serializable {
     private int id;
     private int placeId;
     private String video;

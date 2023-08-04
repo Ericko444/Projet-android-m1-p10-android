@@ -48,7 +48,7 @@ public class PlaceItemAdapter extends RecyclerView.Adapter<PlaceItemAdapter.Plac
 
     @Override
     public void onBindViewHolder(@NonNull PlaceItemHolder holder, int position) {
-        String imageUrl = "https://pixabay.com/get/g40cf2ac2eb92ab995ad0c6905aa86c93bdcf74d098a7dbcf509ab8dd4b1240e26872e92dc43e7238a064f359d328a594e15c28e0133b7b046103087565fb9e32_640.jpg";
+        String imageUrl = "https://cdn.statically.io/gh/Ericko444/CDN/6444d1fb/Tourisme/data-images/rova-3.jpg";
         holder.textView.setText(data.get(position).getTitle());
         holder.province.setText(data.get(position).getProvince().getName());
         Picasso.get().load(imageUrl).fit().centerCrop().into(holder.imageView);
