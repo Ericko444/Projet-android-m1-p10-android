@@ -10,4 +10,5 @@
     <color name="primary">#004FCA</color>
     <color name="secondary">#dfebff</color>
     <color name="default_text">#001C4A</color>
+    <color name="transparent_white">#95ffffff</color>
 </resources>

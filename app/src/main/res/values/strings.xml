@@ -2,4 +2,15 @@
     <string name="app_name">ProjetM1</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_label">Connexion</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Mot de passe</string>
+    <string name="login_btn_label">Se connecter</string>
+    <string name="sign_up_hint">Vous n\'avez pas de compte?</string>
+    <string name="sign_up">S\'inscrire</string>
+    <string name="register_label">Inscription</string>
+    <string name="log_in_hint">Vous avez déjà un compte?</string>
+    <string name="name_label">Nom</string>
+    <string name="first_name_label">Prénom(s)</string>
+    <string name="password_confirm_label">Confirmer le mot de passe</string>
 </resources>
