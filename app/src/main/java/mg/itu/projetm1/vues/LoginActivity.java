@@ -1,7 +1,5 @@
 package mg.itu.projetm1.vues;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,26 +11,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 
 import mg.itu.projetm1.R;
 import mg.itu.projetm1.controllers.Controller;
-import mg.itu.projetm1.models.Users;
 import mg.itu.projetm1.session.SessionManager;
 
 import android.util.Log;
@@ -46,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Controller controller;
     SessionManager sessionManager;
-    private static String URL_LOGIN = "/api/login";
+    private static String URL_LOGIN = "api/login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

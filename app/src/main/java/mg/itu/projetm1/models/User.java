@@ -3,7 +3,7 @@ package mg.itu.projetm1.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Users {
+public class User {
     private Integer id;
     private String username;
     private String name;
@@ -11,9 +11,9 @@ public class Users {
     private String password;
     private String profile;
 
-    public Users() {}
+    public User() {}
 
-    public Users(String username, String name, String email, String password, String profile) {
+    public User(String username, String name, String email, String password, String profile) {
         this.username = username;
         this.name = name;
         this.email = email;
@@ -21,7 +21,7 @@ public class Users {
         this.profile = profile;
     }
 
-    public Users(Integer id, String username, String name, String email, String password, String profile) {
+    public User(Integer id, String username, String name, String email, String password, String profile) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -30,7 +30,7 @@ public class Users {
         this.profile = profile;
     }
 
-    public Users(Integer id, String username, String name, String email, String profile) {
+    public User(Integer id, String username, String name, String email, String profile) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -86,8 +86,8 @@ public class Users {
         this.profile = profile;
     }
 
-    public static Users fromJSON(JSONObject userData) throws JSONException{
-        Users user = null;
+    public static User fromJSON(JSONObject userData) throws JSONException{
+        User user = null;
         try {
             Integer id = userData.getInt("id");
             String username = userData.getString("username").trim();
@@ -95,7 +95,7 @@ public class Users {
             String email = userData.getString("email").trim();
             String profile = userData.getString("profile").trim();
 
-            user = new Users(id, username, name, email, profile);
+            user = new User(id, username, name, email, profile);
 
         } catch (JSONException e) {
             throw e;

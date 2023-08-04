@@ -44,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Controller controller;
     SessionManager sessionManager;
 
-    private static String URL_REGISTER = "/api/signup";
+    private static String URL_REGISTER = "api/signup";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
