@@ -7,11 +7,21 @@
     tools:context=".vues.AccountFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Account"
-        android:textSize="20dp"/>
+        android:layout_marginTop="250dp"
+        android:text=""
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="350dp"
+        android:text=""
+        android:textSize="20dp" />
 
 </FrameLayout>

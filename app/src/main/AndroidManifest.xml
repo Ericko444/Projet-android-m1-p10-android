@@ -5,8 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".utils.MyApplication"
@@ -16,6 +14,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.ProjetM1"
         tools:targetApi="31">
         <activity
@@ -23,7 +22,7 @@
             android:exported="false" />
         <activity
             android:name=".vues.SplashScreen"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,8 +30,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".vues.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".vues.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".vues.MainActivity"
-            android:exported="true">
+            android:exported="false">
         </activity>
         <service android:name=".services.MyFireBaseMessagingService"
             android:exported="true">

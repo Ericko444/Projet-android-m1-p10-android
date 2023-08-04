@@ -13,4 +13,5 @@
     <color name="default_bg">#f2f6fe</color>
     <color name="grey">#9199a9</color>
     <color name="yellowStar">#fcbc06</color>
+    <color name="transparent_white">#95ffffff</color>
 </resources>
