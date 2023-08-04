@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,6 +150,9 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
 
         detailIntent.putExtra("title", clickedItem.getTitle());
         detailIntent.putExtra("desc", clickedItem.getDesc());
+        detailIntent.putExtra("images", (Serializable) clickedItem.getImages());
+        detailIntent.putExtra("tags", (Serializable) clickedItem.getTags());
+        detailIntent.putExtra("reviews", (Serializable) clickedItem.getReviews());
 
         startActivity(detailIntent);
     }

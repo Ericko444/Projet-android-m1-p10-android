@@ -3,9 +3,14 @@ package mg.itu.projetm1.vues;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.squareup.picasso.Picasso;
 
@@ -16,6 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mg.itu.projetm1.R;
+import mg.itu.projetm1.models.Image;
+import mg.itu.projetm1.models.Review;
+import mg.itu.projetm1.models.Tag;
 
 public class PlaceDetailActivity extends AppCompatActivity {
 
@@ -27,6 +35,9 @@ public class PlaceDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String title = intent.getStringExtra("title");
         String desc = intent.getStringExtra("desc");
+        List<Image> images = (List<Image>) intent.getSerializableExtra("images");
+        List<Tag> tags = (List<Tag>) intent.getSerializableExtra("tags");
+        List<Review> reviews = (List<Review>) intent.getSerializableExtra("reviews");
 
         ImageCarousel carousel = findViewById(R.id.carousel);
 
@@ -34,28 +45,42 @@ public class PlaceDetailActivity extends AppCompatActivity {
 
         List<CarouselItem> list = new ArrayList<>();
 
-        list.add(new CarouselItem("https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1080"));
+        for (Image im: images
+             ) {
+            list.add(new CarouselItem(im.getImage()));
+        }
 
-        List<String> tags = new ArrayList<>();
-        tags.add("landscape");
-        tags.add("rova");
-        tags.add("antananarivo");
+        List<String> tagList = new ArrayList<>();
+        for (Tag t : tags
+             ) {
+            tagList.add(t.getName());
+        }
 
         carousel.setData(list);
 
         TextView textViewCreator = findViewById(R.id.place_name);
         TextView textViewLikes = findViewById(R.id.place_desc);
         TextView textViewTags = findViewById(R.id.place_tags);
+        TextView textViewReviews= findViewById(R.id.place_reviews);
 
         String textTags = "Tags : ";
-        for (String tag: tags
+        for (String t : tagList
              ) {
-            textTags += ("#"+tag+", ");
+            textTags += ("#"+t+", ");
         }
+
+        WebView video = findViewById(R.id.place_video);
+        WebSettings webSettings = video.getSettings();
+
+        webSettings.setJavaScriptEnabled(true);
+
+        String videoId = "tqy9h2jSW0c";
+        String youtubeUrl = "https://www.youtube.com/embed/" + videoId;
+        video.loadUrl(youtubeUrl);
 
 //        Picasso.get().load(imageUrl).fit().centerInside().into(imageView);
         textViewCreator.setText(title);
-        textViewLikes.setText(desc);
         textViewTags.setText(textTags);
+        textViewReviews.setText("3.0 ("+reviews.size()+" reviews)");
     }
 }

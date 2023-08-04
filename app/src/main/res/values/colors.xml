@@ -10,4 +10,7 @@
     <color name="primary">#004FCA</color>
     <color name="secondary">#dfebff</color>
     <color name="default_text">#001C4A</color>
+    <color name="default_bg">#f2f6fe</color>
+    <color name="grey">#9199a9</color>
+    <color name="yellowStar">#fcbc06</color>
 </resources>
