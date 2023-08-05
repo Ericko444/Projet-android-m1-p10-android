@@ -17,11 +17,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import mg.itu.projetm1.R;
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     ActivityMainBinding binding;
     private DrawerLayout drawer;
+
+    private static final int MENU_ITEM_ACCOUNT = R.id.account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     replaceFragment(new AccountFragment());
                     break;
             }
-
+            uncheckSideNav();
             return true;
         });
     }
@@ -74,6 +78,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.default_text));
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+    }
+
+    public void uncheckSideNav(){
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+            item.setChecked(false);
+        }
+    }
+
+    public void uncheckBottomNav(){
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        menu.setGroupCheckable(0, true, false);
+        for (int i = 0; i < menu.size(); i++) {
+            menu.getItem(i).setChecked(false);
+        }
+        menu.setGroupCheckable(0, true, true);
+    }
+
+    private void checkBottomNavItem(int itemId) {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(itemId);
     }
 
     private void setNavigationColor() {
@@ -112,6 +141,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_logout:
                 Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
                 break;
+        }
+        uncheckBottomNav();
+        if (item.getItemId() == R.id.nav_account) {
+            checkBottomNavItem(MENU_ITEM_ACCOUNT);
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
