@@ -41,7 +41,10 @@
                     android:layout_height="48dp"
                     android:src="@mipmap/ic_launcher"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/circle_background"
+                    />
             </RelativeLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -63,7 +66,7 @@
                     android:drawablePadding="15dp"
                     android:hint="@string/search_label"
                     android:inputType="text"
-                    android:padding="10dp"
+                    android:padding="12dp"
                     android:textColor="@color/default_text"
                     android:textColorHint="@color/grey"
                     tools:ignore="TextFields"

@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import mg.itu.projetm1.R;
 import mg.itu.projetm1.models.Place;
 import mg.itu.projetm1.models.User;
 import mg.itu.projetm1.session.SessionManager;
+import mg.itu.projetm1.utils.CircleTransformation;
 import mg.itu.projetm1.utils.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -117,8 +120,24 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
         fetchPlacesParProvince();
         initGreetings(rootView);
         setImageListener(rootView);
+        setImageProfile(rootView);
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    private void setImageProfile(View rootView) {
+        if(sessionManager.isLogged()) {
+            ImageView profileImage = rootView.findViewById(R.id.profileImage);
+            HashMap<String, Object> userDetails = sessionManager.getUserDetail();
+            String profileURL = (String) userDetails.get("PROFILE");
+            if (profileURL != null || !profileURL.isEmpty()) {
+                Transformation circleTransformation = new CircleTransformation();
+                Picasso.get()
+                        .load(profileURL)
+                        .transform(circleTransformation)
+                        .into(profileImage);
+            }
+        }
     }
 
     public void initGreetings(View rootView){
