@@ -102,6 +102,14 @@ public class User {
         } finally {
             return user;
         }
+    }
 
+    public static String extractFirstName(String fullName) {
+        String[] nameParts = fullName.split(" ");
+        if (nameParts.length > 0) {
+            return nameParts[1];
+        } else {
+            return nameParts[0];
+        }
     }
 }

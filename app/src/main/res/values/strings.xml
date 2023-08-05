@@ -28,4 +28,9 @@
     <string name="confirm">Confirmer</string>
     <string name="cancel">Annuler</string>
     <string name="logout_label">Voulez-vous vraiment vous déconnecter ?</string>
+    <string name="search_label">Rechercher...</string>
+    <string name="good_morning">Bonjour</string>
+    <string name="good_evening">Bonsoir</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="app_title">XploreMada ©</string>
 </resources>

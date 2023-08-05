@@ -2,7 +2,7 @@ package mg.itu.projetm1.controllers;
 
 public final class Controller {
     private static Controller instance = null;
-    private String BASE_URL = "https://9e39-197-149-60-3.ngrok-free.app/";
+    private String BASE_URL = "https://ccff-102-16-205-73.ngrok.io/";
 
     private Controller(){
         super();
