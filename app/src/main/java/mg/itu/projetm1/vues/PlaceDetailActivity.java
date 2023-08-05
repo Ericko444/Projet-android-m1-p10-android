@@ -101,7 +101,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
         textViewReviews.setText(""+moyenneReviews+" ("+reviews.size()+" reviews)");
     }
 
-    private double getMoyenneReviews(List<Review> reviewList){
+    public static double getMoyenneReviews(List<Review> reviewList){
         double total = 0;
         for (Review rv: reviewList
              ) {

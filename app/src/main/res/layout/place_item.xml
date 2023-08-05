@@ -15,7 +15,7 @@
         <ImageView
             android:id="@+id/image_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background" />
 
@@ -44,6 +44,7 @@
             android:layout_alignParentEnd="true"
             android:orientation="vertical"
             android:padding="10dp"
+            android:background="@drawable/background_filter"
             >
             <TextView
                 android:id="@+id/tvTitle"

@@ -1,11 +1,14 @@
 package mg.itu.projetm1.vues;
 
+import static mg.itu.projetm1.vues.PlaceDetailActivity.getMoyenneReviews;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,9 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import mg.itu.projetm1.R;
 import mg.itu.projetm1.models.Place;
+import mg.itu.projetm1.models.Review;
 
 public class PlaceItemAdapter extends RecyclerView.Adapter<PlaceItemAdapter.PlaceItemHolder> {
 
@@ -48,10 +53,14 @@ public class PlaceItemAdapter extends RecyclerView.Adapter<PlaceItemAdapter.Plac
 
     @Override
     public void onBindViewHolder(@NonNull PlaceItemHolder holder, int position) {
-        String imageUrl = "https://cdn.statically.io/gh/Ericko444/CDN/6444d1fb/Tourisme/data-images/rova-3.jpg";
-        holder.textView.setText(data.get(position).getTitle());
-        holder.province.setText(data.get(position).getProvince().getName());
-        Picasso.get().load(imageUrl).fit().centerCrop().into(holder.imageView);
+        Place currentItem = data.get(position);
+        List<Review> reviews =  currentItem.getReviews();
+        double moyenneReviews = getMoyenneReviews(reviews);
+        holder.rating.setRating((float) moyenneReviews);
+        String imageUrl = currentItem.getImages().size() > 0 ? currentItem.getImages().get(0).getImage() : "https://cdn.statically.io/gh/Ericko444/CDN/c04f6bc6/Tourisme/default_image.png";
+        holder.textView.setText(currentItem.getTitle());
+        holder.province.setText(currentItem.getProvince().getName());
+        Picasso.get().load(imageUrl).placeholder(R.drawable.default_image).fit().centerCrop().into(holder.imageView);
     }
 
     @Override
@@ -65,11 +74,14 @@ public class PlaceItemAdapter extends RecyclerView.Adapter<PlaceItemAdapter.Plac
         TextView province;
         ImageView imageView;
 
+        RatingBar rating;
+
         public PlaceItemHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.tvTitle);
             province = itemView.findViewById(R.id.tvSub);
             imageView = itemView.findViewById(R.id.image_view);
+            rating = itemView.findViewById(R.id.smallRating);
 
             itemView.setOnClickListener(new View.OnClickListener(){
 

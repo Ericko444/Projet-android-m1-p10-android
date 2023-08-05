@@ -1,5 +1,6 @@
 package mg.itu.projetm1.vues;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,6 +17,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,8 +98,11 @@ public class LoginActivity extends AppCompatActivity {
 
         JSONObject requestObject = new JSONObject();
         try {
+            String registrationToken = SplashScreen.getToken();
+            Log.d("FCM TOKEN", registrationToken);
             requestObject.put("email", emailTxt);
             requestObject.put("password", pwdTxt);
+            requestObject.put("token", registrationToken);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -156,5 +163,23 @@ public class LoginActivity extends AppCompatActivity {
         );
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+    public String getInstanceToken(){
+        final String[] instanceToken = {""};
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("FCM", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+                        String token = task.getResult();
+                        instanceToken[0] = token;
+                    }
+                });
+
+        return instanceToken[0];
     }
 }

@@ -2,7 +2,7 @@
     <string name="app_name">ProjetM1</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="guidelines">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed commodo, eros quis malesuada commodo, purus ex posuere arcu, vel interdum nisi turpis sit amet elit. Integer eget tellus quis nibh dapibus finibus ac nec lectus. Vivamus lacinia velit nec libero euismod, in bibendum erat iaculis. Nullam et lacinia justo, non faucibus eros. Etiam nec quam sed elit sagittis bibendum. Vestibulum vel libero eu mauris efficitur tincidunt eu nec ligula. Cras at euismod erat. Fusce viverra dapibus venenatis.</string>
+    <string name="guidelines">Madagascar, surnommée la "Perle de l'Océan Indien", est un trésor pour les amateurs de tourisme. Ses paysages variés, allant des plages de sable blanc aux forêts tropicales luxuriantes, offrent une expérience unique. Découvrez une faune et une flore extraordinaires, des lémuriens espiègles aux caméléons colorés. Plongez dans la culture malgache riche en traditions et en danses envoûtantes. Explorez les marchés animés, goûtez à une cuisine exotique et détendez-vous sur des rivages paradisiaques. Madagascar, un joyau naturel et culturel à explorer et à chérir.</string>
     <string name="notification_channel_id">myCanal</string>
     <string name="notification_channel_title">myTitle</string>
     <string name="notification_channel_description">This is a test canal</string>

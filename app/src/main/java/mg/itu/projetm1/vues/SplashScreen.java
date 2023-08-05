@@ -21,6 +21,16 @@ import mg.itu.projetm1.R;
 public class SplashScreen extends AppCompatActivity {
 
     private TextView version;
+    private static String token;
+
+    public static String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +47,7 @@ public class SplashScreen extends AppCompatActivity {
 
                         // Get new FCM registration token
                         String token = task.getResult();
-
+                        setToken(token);
                         // Log and toast
                         Log.d("FCMTOKEN", token);
                     }
