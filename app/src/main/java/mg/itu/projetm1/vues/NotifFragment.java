@@ -32,7 +32,10 @@ public class NotifFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        int id = 4;
+        SessionManager sessionManager = new SessionManager(getContext());
+        int id = (Integer) sessionManager.getUserDetail().get("ID");
+
+        Log.d("USERIDKKK", String.valueOf(id));
 
         notificationList = new ArrayList<>();
         View rootView = inflater.inflate(R.layout.fragment_notif, container, false);
