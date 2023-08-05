@@ -66,7 +66,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
         carousel.setData(list);
 
         TextView textViewCreator = findViewById(R.id.place_name);
-        TextView textViewLikes = findViewById(R.id.place_desc);
+        TextView descr = findViewById(R.id.place_desc);
         TextView textViewTags = findViewById(R.id.place_tags);
         TextView textViewReviews= findViewById(R.id.place_reviews);
         RatingBar notes = findViewById(R.id.smallRating);
@@ -99,6 +99,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
         textViewCreator.setText(title);
         textViewTags.setText(textTags);
         textViewReviews.setText(""+moyenneReviews+" ("+reviews.size()+" reviews)");
+        descr.setText(desc);
     }
 
     public static double getMoyenneReviews(List<Review> reviewList){

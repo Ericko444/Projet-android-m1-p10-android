@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="150dp"
     android:layout_height="200dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="12dp"
     android:layout_margin="2dp"
-    app:cardUseCompatPadding="true"
-    >
+    app:cardCornerRadius="12dp"
+    app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <ImageView
             android:id="@+id/image_view"
@@ -23,49 +23,50 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            >
+            android:background="@drawable/background_filter">
+
             <RatingBar
+                android:id="@+id/smallRating"
+                style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rating="3"
-                style="?android:attr/ratingBarStyleSmall"
-                android:progressTint="#FFCC01"
-                android:id="@+id/smallRating"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="16dp"
-                />
+                android:layout_marginTop="10dp"
+                android:progressTint="#FFCC01"
+                android:rating="3" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:orientation="vertical"
             android:padding="10dp"
-            android:background="@drawable/background_filter"
             >
+
             <TextView
                 android:id="@+id/tvTitle"
-                android:text="Isalo Park"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textFontWeight="700"
-
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Isalo Park"
+                android:textColor="@color/white"
+
+                android:textFontWeight="700"
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/tvSub"
-                android:text="Isalo Park"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textFontWeight="700"
-
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Isalo Park"
+                android:textColor="@color/white"
+
+                android:textFontWeight="700"
+                android:textSize="16sp" />
         </LinearLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -25,7 +25,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Featured Attractions"
+                    android:text="Les sites incontournables"
                     android:textColor="@color/black"
                     android:textFontWeight="700"
                     android:textSize="20dp" />
@@ -46,7 +46,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Browse By Province"
+                    android:text="Voir par province"
                     android:textColor="@color/black"
                     android:textFontWeight="700"
                     android:textSize="20dp" />
@@ -67,7 +67,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Guidelines"
+                    android:text="Découvrez Madagascar"
                     android:textColor="@color/black"
                     android:textFontWeight="700"
                     android:textSize="20dp" />
@@ -84,7 +84,7 @@
                     android:id="@+id/button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="More" />
+                    android:text="Voir plus" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
