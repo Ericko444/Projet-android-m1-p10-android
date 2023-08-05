@@ -18,4 +18,5 @@
     <color name="toolbar_center_color">#FFFFFFFF</color>
     <color name="toolbar_end_color">#FFFFFFFF</color>
     <color name="nav_item_highlighted_color">#232C3D</color>
+    <color name="crimson">#DC143C</color>
 </resources>

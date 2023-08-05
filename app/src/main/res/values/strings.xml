@@ -25,4 +25,7 @@
     <string name="logout">Déconnexion</string>
     <string name="open">open</string>
     <string name="close">close</string>
+    <string name="confirm">Confirmer</string>
+    <string name="cancel">Annuler</string>
+    <string name="logout_label">Voulez-vous vraiment vous déconnecter ?</string>
 </resources>

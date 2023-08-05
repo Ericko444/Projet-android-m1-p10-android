@@ -37,12 +37,6 @@ public class SessionManager {
         return sharedPreferences.getBoolean(LOGIN, false);
     }
 
-    public void checkLogin(){
-        if(!this.isLogged()){
-            goToLogin();
-        }
-    }
-
     public HashMap<String, String> getUserDetail(){
         HashMap<String, String> user = new HashMap<>();
         user.put(NAME, sharedPreferences.getString(NAME, null));

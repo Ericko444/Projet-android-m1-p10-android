@@ -3,6 +3,7 @@ package mg.itu.projetm1.vues;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -12,35 +13,42 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.HashMap;
+
 import mg.itu.projetm1.R;
 import mg.itu.projetm1.databinding.ActivityMainBinding;
+import mg.itu.projetm1.session.SessionManager;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ActivityMainBinding binding;
     private DrawerLayout drawer;
-
     private static final int MENU_ITEM_ACCOUNT = R.id.account;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        sessionManager = new SessionManager(this);
         replaceFragment(new HomeFragment());
         initToolbar();
         setNavigationColor();
@@ -62,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             uncheckSideNav();
             return true;
         });
+        updateMenuVisibility();
     }
 
     private void initToolbar() {
@@ -136,18 +145,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 replaceFragment(new AboutUsFragment());
                 break;
             case R.id.nav_login:
-                Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show();
+                Intent loginIntent = new Intent(this, LoginActivity.class);
+                startActivity(loginIntent);
                 break;
             case R.id.nav_logout:
                 Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+                invalidateOptionsMenu();
                 break;
         }
         uncheckBottomNav();
         if (item.getItemId() == R.id.nav_account) {
             checkBottomNavItem(MENU_ITEM_ACCOUNT);
         }
+        handleNavigationItemClick(item.getItemId());
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void handleNavigationItemClick(int itemId) {
+        if(itemId == R.id.nav_logout){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_confirm_logout, null);
+            builder.setView(dialogView);
+
+            AlertDialog alertDialog = builder.create();
+
+            Button buttonCancel = dialogView.findViewById(R.id.buttonCancel);
+            Button buttonLogout = dialogView.findViewById(R.id.buttonLogout);
+
+            buttonCancel.setOnClickListener(v -> alertDialog.dismiss());
+            buttonLogout.setOnClickListener(v -> {
+                alertDialog.dismiss();
+                sessionManager.logout();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            });
+
+            alertDialog.show();
+        }
+    }
+
+    private void updateMenuVisibility() {
+        Menu menu = binding.navView.getMenu();
+
+        MenuItem loginItem = menu.findItem(R.id.nav_login);
+        MenuItem logoutItem = menu.findItem(R.id.nav_logout);
+
+        if (sessionManager.isLogged()) {
+            loginItem.setVisible(false);
+            logoutItem.setVisible(true);
+        } else {
+            loginItem.setVisible(true);
+            logoutItem.setVisible(false);
+        }
     }
 
     @Override
@@ -164,5 +215,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        updateMenuVisibility();
+        return super.onPrepareOptionsMenu(menu);
     }
 }
