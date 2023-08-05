@@ -19,6 +19,9 @@ public class SessionManager {
     public static final String LOGIN = "IS_LOGIN";
     public static final String NAME = "NAME";
     public static final String EMAIL = "EMAIL";
+    public static final String USERNAME = "USERNAME";
+    public static final String PROFILE = "PROFILE";
+    public static final String ID = "ID";
 
     public SessionManager(Context context){
         this.context = context;
@@ -26,10 +29,13 @@ public class SessionManager {
         editor = sharedPreferences.edit();
     }
 
-    public void createSession(String name, String email){
+    public void createSession(int id, String name, String email, String userName, String profile){
         editor.putBoolean(LOGIN, true);
+        editor.putInt(ID, id);
         editor.putString(NAME, name);
         editor.putString(EMAIL, email);
+        editor.putString(USERNAME, userName);
+        editor.putString(PROFILE, profile);
         editor.apply();
     }
 
@@ -37,10 +43,13 @@ public class SessionManager {
         return sharedPreferences.getBoolean(LOGIN, false);
     }
 
-    public HashMap<String, String> getUserDetail(){
-        HashMap<String, String> user = new HashMap<>();
+    public HashMap<String, Object> getUserDetail(){
+        HashMap<String, Object> user = new HashMap<>();
+        user.put(ID, sharedPreferences.getInt(ID, 0));
+        user.put(USERNAME, sharedPreferences.getString(USERNAME, null));
         user.put(NAME, sharedPreferences.getString(NAME, null));
         user.put(EMAIL, sharedPreferences.getString(EMAIL, null));
+        user.put(PROFILE, sharedPreferences.getString(PROFILE, null));
         return user;
     }
 

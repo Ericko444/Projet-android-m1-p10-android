@@ -123,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 JSONObject userData = response.getJSONObject("data");
                                 loading.setVisibility(View.GONE);
                                 sessionManager.logout();
-                                sessionManager.createSession(userData.getString("name"), userData.getString("email"));
+                                sessionManager.createSession(userData.getInt("id"), userData.getString("name"), userData.getString("email"), userData.getString("username"), userData.getString("profile"));
                                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                                 finish();
                             } else {
