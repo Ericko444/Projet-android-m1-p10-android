@@ -15,6 +15,9 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(binding.getRoot());
         replaceFragment(new HomeFragment());
         initToolbar();
+        setNavigationColor();
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()){
                 case R.id.home:
@@ -66,6 +70,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         drawer = findViewById(R.id.main_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.default_text));
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    private void setNavigationColor() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         ColorStateList tint = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.default_text));
@@ -73,10 +84,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setItemIconTintList(tint);
         navigationView.setItemBackgroundResource(R.drawable.nav_item_background);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
-        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.default_text));
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        Menu menu = navigationView.getMenu();
+        MenuItem others= menu.findItem(R.id.nav_others);
+        SpannableString s = new SpannableString(others.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.NavigationViewTextStyle), 0, s.length(), 0);
+        others.setTitle(s);
     }
 
     @Override

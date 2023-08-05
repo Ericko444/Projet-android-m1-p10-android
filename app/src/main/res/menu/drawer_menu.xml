@@ -20,7 +20,8 @@
             android:icon="@drawable/baseline_info_24"
             android:title="@string/about_us" />
     </group>
-    <item android:title="@string/others">
+    <item android:title="@string/others"
+        android:id="@+id/nav_others">
         <menu>
             <item
                 android:id="@+id/nav_logout"
