@@ -41,7 +41,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ActivityMainBinding binding;
     private DrawerLayout drawer;
     private static final int MENU_ITEM_ACCOUNT = R.id.account;
+    private static final int MENU_ITEM_HOME = R.id.home;
     private SessionManager sessionManager;
+    private Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         sessionManager = new SessionManager(this);
-        replaceFragment(new HomeFragment());
+        HomeFragment homeFragment = new HomeFragment();
+        replaceFragment(homeFragment);
+        currentFragment = homeFragment;
         initToolbar();
         setNavigationColor();
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -210,11 +214,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if(drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+            return;
         }
+
+        if (!(currentFragment instanceof HomeFragment)) {
+            replaceFragment(new HomeFragment());
+            currentFragment = new HomeFragment();
+            checkBottomNavItem(MENU_ITEM_HOME);
+            return;
+        }
+        super.onBackPressed();
     }
 
     private void replaceFragment(Fragment fragment){
@@ -222,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+        currentFragment = fragment;
     }
 
     @Override
