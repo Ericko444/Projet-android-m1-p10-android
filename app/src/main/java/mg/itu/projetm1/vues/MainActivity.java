@@ -168,7 +168,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 replaceFragment(new NotifFragment());
                 break;
             case R.id.nav_settings:
-                replaceFragment(new SettingFragment());
+                Intent settingIntent = new Intent(this, SettingActivity.class);
+                startActivity(settingIntent);
                 break;
             case R.id.nav_about_us:
                 replaceFragment(new AboutUsFragment());
@@ -257,5 +258,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onPrepareOptionsMenu(Menu menu) {
         updateMenuVisibility();
         return super.onPrepareOptionsMenu(menu);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        uncheckSideNav();
     }
 }
