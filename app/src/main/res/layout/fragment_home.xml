@@ -39,7 +39,7 @@
                     android:id="@+id/profileImage"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@drawable/baseline_account_circle_2_24"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:scaleType="centerCrop"

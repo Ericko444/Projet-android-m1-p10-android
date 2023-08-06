@@ -130,7 +130,7 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
             ImageView profileImage = rootView.findViewById(R.id.profileImage);
             HashMap<String, Object> userDetails = sessionManager.getUserDetail();
             String profileURL = (String) userDetails.get("PROFILE");
-            if (profileURL != null || !profileURL.isEmpty()) {
+            if (profileURL != null && !profileURL.isEmpty()) {
                 Transformation circleTransformation = new CircleTransformation();
                 Picasso.get()
                         .load(profileURL)
@@ -184,7 +184,7 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
         if(sessionManager.isLogged()){
             HashMap<String, Object> userDetails = sessionManager.getUserDetail();
             String name = (String) userDetails.get("NAME");
-            if(name != null || !name.isEmpty()){
+            if(name != null && !name.isEmpty()){
                 postFix = ", " + User.extractFirstName(name);
             }
         } else {
