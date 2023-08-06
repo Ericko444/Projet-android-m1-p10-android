@@ -1,17 +1,5 @@
 package mg.itu.projetm1.vues;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.TextAppearanceSpan;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -26,8 +14,27 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.HashMap;
 
 import mg.itu.projetm1.R;
 import mg.itu.projetm1.databinding.ActivityMainBinding;
@@ -41,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int MENU_ITEM_HOME = R.id.home;
     private SessionManager sessionManager;
     private Fragment currentFragment;
+    private boolean isDarkModeEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +56,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         sessionManager = new SessionManager(this);
+        checkPreferences();
         HomeFragment homeFragment = new HomeFragment();
         replaceFragment(homeFragment);
         currentFragment = homeFragment;
         initToolbar();
         setNavigationColor();
-        checkPreferences();
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()){
                 case R.id.home:
@@ -78,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void checkPreferences() {
         SharedPreferences sharedPreferences = getSharedPreferences(SettingActivity.PREF_NAME, Context.MODE_PRIVATE);
         if(sharedPreferences != null){
-            boolean isDarkModeEnabled = sharedPreferences.getBoolean(SettingActivity.KEY_DARK_MODE, false);
+            isDarkModeEnabled = sharedPreferences.getBoolean(SettingActivity.KEY_DARK_MODE, false);
             if (isDarkModeEnabled) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             } else {
@@ -98,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawer = findViewById(R.id.main_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
-        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.default_text));
+        int color = isDarkModeEnabled ? R.color.dark_theme_text : R.color.default_text;
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(color));
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
@@ -139,7 +148,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setNavigationColor() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        ColorStateList tint = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.default_text));
+        int color = isDarkModeEnabled ? R.color.dark_theme_text : R.color.default_text;
+        ColorStateList tint = ColorStateList.valueOf(ContextCompat.getColor(this, color));
         navigationView.setItemTextColor(tint);
         navigationView.setItemIconTintList(tint);
         navigationView.setItemBackgroundResource(R.drawable.nav_item_background);
@@ -147,7 +157,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Menu menu = navigationView.getMenu();
         MenuItem others= menu.findItem(R.id.nav_others);
         SpannableString s = new SpannableString(others.getTitle());
-        s.setSpan(new TextAppearanceSpan(this, R.style.NavigationViewTextStyle), 0, s.length(), 0);
+        if(isDarkModeEnabled){
+            s.setSpan(new TextAppearanceSpan(this, R.style.NavigationViewTextStyle), 0, s.length(), 0);
+        } else {
+            s.setSpan(new TextAppearanceSpan(this, R.style.NavigationViewTextStyle), 0, s.length(), 0);
+        }
         others.setTitle(s);
     }
 
