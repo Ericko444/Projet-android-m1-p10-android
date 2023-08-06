@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +30,7 @@ import java.util.List;
 
 import mg.itu.projetm1.R;
 import mg.itu.projetm1.models.Place;
+import mg.itu.projetm1.models.PlaceModel;
 import mg.itu.projetm1.models.User;
 import mg.itu.projetm1.session.SessionManager;
 import mg.itu.projetm1.utils.CircleTransformation;
@@ -58,6 +60,10 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
 
     private ArrayList<Place> dataRecommendations;
     private ArrayList<Place> dataParProvince;
+
+    private PlaceModel placeModelRecom;
+
+    private PlaceModel placeModelProv;
     private LinearLayoutManager linearLayoutManager;
     private LinearLayoutManager linearLayoutManager2;
     private PlaceItemAdapter placeItemAdapterRecommendation;
@@ -89,6 +95,8 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        placeModelRecom = new ViewModelProvider(this).get(PlaceModel.class);
+        placeModelProv = new ViewModelProvider(this).get(PlaceModel.class);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -101,7 +109,8 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
         sessionManager = new SessionManager(getActivity());
         dataRecommendations = new ArrayList<Place>();
         dataParProvince = new ArrayList<Place>();
-
+        placeModelRecom = new ViewModelProvider(requireActivity()).get(PlaceModel.class);
+        placeModelProv = new ViewModelProvider(requireActivity()).get(PlaceModel.class);
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerViewRecommendation = rootView.findViewById(R.id.recommendations);
         recyclerViewParProvince = rootView.findViewById(R.id.par_province);
@@ -194,45 +203,61 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
     }
 
     private void fetchPlacesRecommendation(){
-        RetrofitClient.getRetrofitClient().getPlacesRecommendation().enqueue(new Callback<List<Place>>() {
-            @Override
-            public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
-                if(response.isSuccessful() && response.body() != null){
-                    dataRecommendations.addAll(response.body());
-                    placeItemAdapterRecommendation.notifyDataSetChanged();
+        List<Place> cachedData = placeModelRecom.getData().getValue();
+        if(cachedData != null && !cachedData.isEmpty()){
+            dataRecommendations.addAll(cachedData);
+            placeItemAdapterRecommendation.notifyDataSetChanged();
+        }else{
+            RetrofitClient.getRetrofitClient().getPlacesRecommendation().enqueue(new Callback<List<Place>>() {
+                @Override
+                public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
+                    if(response.isSuccessful() && response.body() != null){
+                        dataRecommendations.addAll(response.body());
+                        placeModelRecom.setData(dataRecommendations);
+                        placeItemAdapterRecommendation.notifyDataSetChanged();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<Place>> call, Throwable t) {
-                Toast.makeText(getActivity(), "Error "+t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d("ERROR", "onFailure: "+t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<List<Place>> call, Throwable t) {
+                    Toast.makeText(getActivity(), "Error "+t.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.d("ERROR", "onFailure: "+t.getMessage());
+                }
+            });
+        }
     }
 
     private void fetchPlacesParProvince(){
-        RetrofitClient.getRetrofitClient().getPlacesParProvince().enqueue(new Callback<List<Place>>() {
-            @Override
-            public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
-                if(response.isSuccessful() && response.body() != null){
-                    dataParProvince.addAll(response.body());
-                    placeItemAdapterParProvince.notifyDataSetChanged();
+        List<Place> cachedData = placeModelProv.getData().getValue();
+        if(cachedData != null && !cachedData.isEmpty()){
+            dataParProvince.addAll(cachedData);
+            placeItemAdapterParProvince.notifyDataSetChanged();
+        }
+        else{
+            RetrofitClient.getRetrofitClient().getPlacesParProvince().enqueue(new Callback<List<Place>>() {
+                @Override
+                public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
+                    if(response.isSuccessful() && response.body() != null){
+                        dataParProvince.addAll(response.body());
+                        placeModelProv.setData(dataParProvince);
+                        placeItemAdapterParProvince.notifyDataSetChanged();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<Place>> call, Throwable t) {
-                Toast.makeText(getActivity(), "Error "+t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d("ERROR", "onFailure: "+t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<List<Place>> call, Throwable t) {
+                    Toast.makeText(getActivity(), "Error "+t.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.d("ERROR", "onFailure: "+t.getMessage());
+                }
+            });
+        }
+
     }
 
     @Override
     public void onItemClick(int position) {
         Intent detailIntent = new Intent(getActivity(), PlaceDetailActivity.class);
-        Place clickedItem = dataRecommendations.get(position);
+        Place clickedItem = placeModelRecom.getData().getValue().get(position);
 
         detailIntent.putExtra("title", clickedItem.getTitle());
         detailIntent.putExtra("desc", clickedItem.getDesc());

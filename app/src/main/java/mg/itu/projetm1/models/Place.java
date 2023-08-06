@@ -1,8 +1,9 @@
 package mg.itu.projetm1.models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Place {
+public class Place implements Serializable {
     private int id;
     private String title;
     private String desc;
