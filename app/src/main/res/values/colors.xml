@@ -13,10 +13,13 @@
     <color name="default_bg">#f2f6fe</color>
     <color name="grey">#9199a9</color>
     <color name="yellowStar">#fcbc06</color>
+    <color name="brightYellow">#FFD766</color>
     <color name="transparent_white">#95ffffff</color>
     <color name="toolbar_start_color">#00000000</color>
     <color name="toolbar_center_color">#FFFFFFFF</color>
     <color name="toolbar_end_color">#FFFFFFFF</color>
     <color name="nav_item_highlighted_color">#232C3D</color>
     <color name="crimson">#DC143C</color>
+    <color name="light_background">#DADADA</color>
+    <color name="darker_gray">#717171</color>
 </resources>

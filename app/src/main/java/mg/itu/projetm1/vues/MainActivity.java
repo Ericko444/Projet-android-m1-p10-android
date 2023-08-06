@@ -114,6 +114,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bottomNavigationView.setSelectedItemId(itemId);
     }
 
+    public void toggleToolbarVisibility(boolean show) {
+        if (show) {
+            getSupportActionBar().show();
+        } else {
+            getSupportActionBar().hide();
+        }
+    }
+
     private void setNavigationColor() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);

@@ -18,4 +18,22 @@ public class SettingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
+            activity.toggleToolbarVisibility(false); // Hide the toolbar
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
+            activity.toggleToolbarVisibility(true); // Show the toolbar
+        }
+    }
 }
