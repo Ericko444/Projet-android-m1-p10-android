@@ -33,4 +33,12 @@
     <string name="good_evening">Bonsoir</string>
     <string name="welcome">Bienvenue</string>
     <string name="app_title">XploreMada ©</string>
+    <string name="appearance_title">Apparence</string>
+    <string name="dark_mode">Mode nuit</string>
+    <string name="dark_mode_sub">Activer ou désactiver le mode sombre</string>
+    <string name="activate_notif">Activer les notifications</string>
+    <string name="notification_sub">Recevoir des alertes à partir de l\'application</string>
+    <string name="vibrate">Vibration</string>
+    <string name="vibrate_sub">Activer des vibrations quand vous recevez des notifications</string>
+    <string name="app_version">Version de l\'application</string>
 </resources>
