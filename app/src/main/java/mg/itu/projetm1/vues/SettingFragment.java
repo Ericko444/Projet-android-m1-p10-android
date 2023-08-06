@@ -22,9 +22,9 @@ import mg.itu.projetm1.session.SessionManager;
 
 public class SettingFragment extends Fragment {
 
-    private static final String PREF_NAME = "my_preferences";
-    private static final String KEY_DARK_MODE = "dark_mode";
-    private static final String KEY_NOTIFICATIONS = "notifications";
+    public static final String PREF_NAME = "my_preferences";
+    public static final String KEY_DARK_MODE = "dark_mode";
+    public static final String KEY_NOTIFICATIONS = "notifications";
     private SharedPreferences sharedPreferences;
     private Switch switchDarkMode;
     private Switch switchNotifications;
