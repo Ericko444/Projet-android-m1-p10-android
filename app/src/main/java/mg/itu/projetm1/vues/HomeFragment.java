@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,14 +13,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import mg.itu.projetm1.R;
 import mg.itu.projetm1.models.Place;
+import mg.itu.projetm1.models.User;
+import mg.itu.projetm1.session.SessionManager;
+import mg.itu.projetm1.utils.CircleTransformation;
 import mg.itu.projetm1.utils.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,6 +62,7 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
     private LinearLayoutManager linearLayoutManager2;
     private PlaceItemAdapter placeItemAdapterRecommendation;
     private PlaceItemAdapter placeItemAdapterParProvince;
+    SessionManager sessionManager;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -84,6 +98,7 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        sessionManager = new SessionManager(getActivity());
         dataRecommendations = new ArrayList<Place>();
         dataParProvince = new ArrayList<Place>();
 
@@ -103,8 +118,79 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
 
         fetchPlacesRecommendation();
         fetchPlacesParProvince();
+        initGreetings(rootView);
+        setImageListener(rootView);
+        setImageProfile(rootView);
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    private void setImageProfile(View rootView) {
+        if(sessionManager.isLogged()) {
+            ImageView profileImage = rootView.findViewById(R.id.profileImage);
+            HashMap<String, Object> userDetails = sessionManager.getUserDetail();
+            String profileURL = (String) userDetails.get("PROFILE");
+            if (profileURL != null || !profileURL.isEmpty()) {
+                Transformation circleTransformation = new CircleTransformation();
+                Picasso.get()
+                        .load(profileURL)
+                        .transform(circleTransformation)
+                        .into(profileImage);
+            }
+        }
+    }
+
+    public void initGreetings(View rootView){
+        TextView greetingTextView = rootView.findViewById(R.id.greetingText);
+
+        Calendar calendar = Calendar.getInstance();
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+
+        String greeting;
+        if (hourOfDay >= 0 && hourOfDay < 18) {
+            greeting = getString(R.string.good_morning);
+        } else {
+            greeting = getString(R.string.good_evening);
+        }
+
+        greeting = addUserDetail(greeting);
+
+        greetingTextView.setText(greeting);
+    }
+
+    public void setImageListener(View rootView){
+        ImageView profileImage = rootView.findViewById(R.id.profileImage);
+
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AccountFragment accountFragment = new AccountFragment();
+
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                fragmentTransaction.replace(R.id.fragment_home, accountFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+                BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+                bottomNavigationView.setSelectedItemId(R.id.account);
+            }
+        });
+    }
+
+    private String addUserDetail(String greeting) {
+        String postFix = " !";
+        if(sessionManager.isLogged()){
+            HashMap<String, Object> userDetails = sessionManager.getUserDetail();
+            String name = (String) userDetails.get("NAME");
+            if(name != null || !name.isEmpty()){
+                postFix = ", " + User.extractFirstName(name);
+            }
+        } else {
+            greeting = getString(R.string.welcome);
+        }
+        return greeting + postFix;
     }
 
     private void fetchPlacesRecommendation(){
