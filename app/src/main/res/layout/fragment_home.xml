@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:text="Les sites incontournables"
                     style="@style/TextColor"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"/>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:text="Découvrez Madagascar"
                     style="@style/TextColor"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="5dp"/>
 
@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/guidelines"
                     style="@style/TextColorSecond"
-                    android:textSize="14sp" android:layout_marginBottom="20dp" />
+                    android:textSize="16sp" android:layout_marginBottom="20dp" />
 
                 <Button
                     android:id="@+id/button"
