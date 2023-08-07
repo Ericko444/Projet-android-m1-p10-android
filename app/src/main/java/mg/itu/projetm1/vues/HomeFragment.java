@@ -68,6 +68,8 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.Recommend
 
     DataCacheManager dataCacheManager;
 
+    TextView input_search;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -120,8 +122,28 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.Recommend
         initGreetings(rootView);
         setImageListener(rootView);
         setImageProfile(rootView);
+        setSearchListener(rootView);
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    private void setSearchListener(View rootView) {
+        input_search = rootView.findViewById(R.id.input_search);
+        input_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment exploreFragment = new ExploreFragment();
+                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, exploreFragment);
+
+                Bundle args = new Bundle();
+                args.putBoolean("focusSearchBar", true);
+                exploreFragment.setArguments(args);
+
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
     }
 
     private void setImageProfile(View rootView) {

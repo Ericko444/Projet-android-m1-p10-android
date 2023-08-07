@@ -47,31 +47,20 @@
                     />
             </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/search_input_layout"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:hintEnabled="false">
-                <EditText
+                <TextView
                     android:id="@+id/input_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="15dp"
+                    android:text="@string/search_label"
                     android:background="@drawable/rounded_edittext_background"
-                    android:drawableStart="@drawable/baseline_search_24"
-                    android:drawablePadding="15dp"
-                    android:hint="@string/search_label"
-                    android:inputType="text"
-                    android:padding="12dp"
-                    style="@style/TextColor"
-                    android:textColorHint="@color/grey"
-                    tools:ignore="TextFields"
-                    android:autofillHints="" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    style="@style/TextColorSecond"
+                    android:gravity="start|center_vertical"
+                    android:drawableLeft="@drawable/baseline_search_24"
+                    android:drawablePadding="8dp"
+                    android:padding="10dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
