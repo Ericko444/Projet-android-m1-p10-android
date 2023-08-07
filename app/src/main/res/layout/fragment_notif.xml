@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/BtnBackground"
+    tools:context=".vues.NotifFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notifications"
+                style="@style/TextColor"
+                android:textFontWeight="700"
+                android:layout_gravity="center_horizontal"
+                android:textSize="30dp"
+                android:layout_marginBottom="30dp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notifications_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal" />
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

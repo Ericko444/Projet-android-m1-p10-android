@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">XploreMada</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="guidelines">Madagascar, surnommée la "Perle de l'Océan Indien", est un trésor pour les amateurs de tourisme. Ses paysages variés, allant des plages de sable blanc aux forêts tropicales luxuriantes, offrent une expérience unique. Découvrez une faune et une flore extraordinaires, des lémuriens espiègles aux caméléons colorés. Plongez dans la culture malgache riche en traditions et en danses envoûtantes. Explorez les marchés animés, goûtez à une cuisine exotique et détendez-vous sur des rivages paradisiaques. Madagascar, un joyau naturel et culturel à explorer et à chérir.</string>
+    <string name="notification_channel_id">myCanal</string>
+    <string name="notification_channel_title">myTitle</string>
+    <string name="notification_channel_description">This is a test canal</string>
+    <string name="login_label">Connexion</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Mot de passe</string>
+    <string name="login_btn_label">Se connecter</string>
+    <string name="sign_up_hint">Vous n\'avez pas de compte?</string>
+    <string name="sign_up">S\'inscrire</string>
+    <string name="register_label">Inscription</string>
+    <string name="log_in_hint">Vous avez déjà un compte?</string>
+    <string name="name_label">Nom</string>
+    <string name="first_name_label">Prénom(s)</string>
+    <string name="password_confirm_label">Confirmer le mot de passe</string>
+    <string name="my_account">Mon compte</string>
+    <string name="notification">Notifications</string>
+    <string name="settings">Paramètres</string>
+    <string name="about_us">A propos</string>
+    <string name="others">Autres</string>
+    <string name="logout">Déconnexion</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="confirm">Confirmer</string>
+    <string name="cancel">Annuler</string>
+    <string name="logout_label">Voulez-vous vraiment vous déconnecter ?</string>
+    <string name="search_label">Rechercher...</string>
+    <string name="good_morning">Bonjour</string>
+    <string name="good_evening">Bonsoir</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="app_title">XploreMada ©</string>
+    <string name="appearance_title">Apparence</string>
+    <string name="dark_mode">Mode nuit</string>
+    <string name="dark_mode_sub">Activer ou désactiver le mode sombre</string>
+    <string name="activate_notif">Activer les notifications</string>
+    <string name="notification_sub">Recevoir des alertes à partir de l\'application</string>
+    <string name="vibrate">Vibration</string>
+    <string name="vibrate_sub">Activer des vibrations quand vous recevez des notifications</string>
+    <string name="app_version">Version de l\'application</string>
+    <string name="explore">Explorer</string>
+    <string name="username_label">Pseudo</string>
+    <string name="about_us_text">XploreMada est votre compagnon de voyage virtuel pour découvrir les trésors uniques de Madagascar. Plongez dans une aventure immersive à travers des images époustouflantes, des vidéos captivantes et des récits passionnants. Explorez les richesses culturelles, la beauté naturelle et les expériences uniques que Madagascar a à offrir. Préparez-vous à embarquer pour un voyage inoubliable avec XploreMada.</string>
+</resources>
