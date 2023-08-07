@@ -152,6 +152,12 @@ public class PlaceItemAdapter extends RecyclerView.Adapter<PlaceItemAdapter.Plac
                             parProvinceItemClickListener.onParProvinceItemClick(position);
                         }
                     }
+                    else if(listener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
                 }
             });
         }
