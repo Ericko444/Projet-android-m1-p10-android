@@ -3,6 +3,7 @@ package mg.itu.projetm1.vues;
 import static mg.itu.projetm1.vues.PlaceDetailActivity.getMoyenneReviews;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,12 @@ public class PlaceItemAdapter extends RecyclerView.Adapter<PlaceItemAdapter.Plac
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public void updateList(ArrayList<Place> newList) {
+        data.clear();
+        data.addAll(newList);
+        notifyDataSetChanged();
     }
 
     public class PlaceItemHolder extends RecyclerView.ViewHolder {

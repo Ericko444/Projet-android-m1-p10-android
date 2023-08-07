@@ -16,6 +16,9 @@ public interface PlaceInterface {
     @GET("/api/parprovinces")
     Call<List<Place>> getPlacesParProvince();
 
+    @GET("/api/places")
+    Call<List<Place>> getAllPlaces();
+
     @GET("/api/notifications/{id}")
     Call<List<Notification>> getNotifications(@Path("id") int id);
 

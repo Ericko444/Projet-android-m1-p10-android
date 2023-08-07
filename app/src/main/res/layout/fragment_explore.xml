@@ -1,17 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".vues.ExploreFragment">
+    style="@style/BtnBackground"
+    tools:context=".vues.ExploreFragment"
+    android:orientation="vertical"
+    android:paddingStart="30dp"
+    android:paddingEnd="30dp"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Explore"
-        android:textSize="20dp"/>
+        android:text="@string/explore"
+        android:gravity="center"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:paddingTop="80dp"
+        android:paddingBottom="25dp"
+        style="@style/TextColor"
+        android:textSize="27sp"
+        />
 
-</FrameLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_input_layout_explore"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        android:paddingBottom="30dp"
+        app:hintEnabled="false">
+        <EditText
+            android:id="@+id/explore_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edittext_background"
+            android:drawableStart="@drawable/baseline_search_24"
+            android:drawablePadding="15dp"
+            android:hint="@string/search_label"
+            android:inputType="text"
+            android:padding="12dp"
+            style="@style/TextColor"
+            android:textColorHint="@color/grey"
+            tools:ignore="TextFields"
+            android:autofillHints="" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/allPlaces"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
+</LinearLayout>
