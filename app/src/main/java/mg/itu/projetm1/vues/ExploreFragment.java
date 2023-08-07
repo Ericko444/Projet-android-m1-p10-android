@@ -119,6 +119,7 @@ public class ExploreFragment extends Fragment  implements PlaceItemAdapter.OnIte
         List<Place> cachedDataModel =  placeModel.getData().getValue();
         if(cachedData != null && !cachedData.isEmpty()){
             allPlaces.addAll(cachedData);
+            placeModel.setData(allPlaces);
             placeAdapter.notifyDataSetChanged();
             initialPlaces = new ArrayList<>(allPlaces);
         }
@@ -152,8 +153,8 @@ public class ExploreFragment extends Fragment  implements PlaceItemAdapter.OnIte
     @Override
     public void onItemClick(int position) {
         Intent detailIntent = new Intent(getActivity(), PlaceDetailActivity.class);
-        Place clickedItem = allPlaces.get(position);
-
+        Place clickedItem = placeModel.getData().getValue().get(position);
+        Log.d("EXPLORECLICK", "onItemClick: CLICKED"+clickedItem.getTitle());
         detailIntent.putExtra("title", clickedItem.getTitle());
         detailIntent.putExtra("desc", clickedItem.getDesc());
         detailIntent.putExtra("images", (Serializable) clickedItem.getImages());
