@@ -24,6 +24,16 @@ public class Place implements Serializable {
 
     private List<Video> videos;
 
+    private int sumOfNotes = 0;
+
+    public int getSumOfNotes() {
+        return sumOfNotes;
+    }
+
+    public void setSumOfNotes(int sumOfNotes) {
+        this.sumOfNotes = sumOfNotes;
+    }
+
     public Place(int id, String title, String desc, double latitude, double longitude, int provinceId, int categorieId) {
         this.id = id;
         this.title = title;

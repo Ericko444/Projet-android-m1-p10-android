@@ -34,6 +34,7 @@ import mg.itu.projetm1.models.PlaceModel;
 import mg.itu.projetm1.models.User;
 import mg.itu.projetm1.session.SessionManager;
 import mg.itu.projetm1.utils.CircleTransformation;
+import mg.itu.projetm1.utils.DataCacheManager;
 import mg.itu.projetm1.utils.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,6 +66,8 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.Recommend
     private PlaceItemAdapter placeItemAdapterRecommendation;
     SessionManager sessionManager;
 
+    DataCacheManager dataCacheManager;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -91,6 +94,7 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.Recommend
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         placeModelRecom = new ViewModelProvider(this).get(PlaceModel.class);
+        dataCacheManager = new DataCacheManager(getContext());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -101,6 +105,7 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.Recommend
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         sessionManager = new SessionManager(getActivity());
+        dataCacheManager = new DataCacheManager(getContext());
         dataRecommendations = new ArrayList<Place>();
         placeModelRecom = new ViewModelProvider(requireActivity()).get(PlaceModel.class);
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
@@ -190,11 +195,19 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.Recommend
     private void fetchPlacesRecommendation(){
         placeItemAdapterRecommendation.setLoading(true);
         placeItemAdapterRecommendation.notifyDataSetChanged();
-        List<Place> cachedData = placeModelRecom.getData().getValue();
+        List<Place>cachedData =  dataCacheManager.recommendations();
+        List<Place> cachedDataModel =  placeModelRecom.getData().getValue();
         if(cachedData != null && !cachedData.isEmpty()){
             placeItemAdapterRecommendation.setLoading(false);
             placeItemAdapterRecommendation.notifyDataSetChanged();
             dataRecommendations.addAll(cachedData);
+            placeModelRecom.setData(dataRecommendations);
+            placeItemAdapterRecommendation.notifyDataSetChanged();
+        }
+        else if(cachedDataModel != null && !cachedDataModel.isEmpty()){
+            placeItemAdapterRecommendation.setLoading(false);
+            placeItemAdapterRecommendation.notifyDataSetChanged();
+            dataRecommendations.addAll(cachedDataModel);
             placeItemAdapterRecommendation.notifyDataSetChanged();
         }else{
             RetrofitClient.getRetrofitClient().getPlacesRecommendation().enqueue(new Callback<List<Place>>() {

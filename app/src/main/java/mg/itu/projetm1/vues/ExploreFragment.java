@@ -30,6 +30,7 @@ import mg.itu.projetm1.R;
 import mg.itu.projetm1.models.Place;
 import mg.itu.projetm1.models.PlaceModel;
 import mg.itu.projetm1.session.SessionManager;
+import mg.itu.projetm1.utils.DataCacheManager;
 import mg.itu.projetm1.utils.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,6 +47,8 @@ public class ExploreFragment extends Fragment  implements PlaceItemAdapter.OnIte
     private EditText inputSearch;
 
     private PlaceModel placeModel;
+
+    DataCacheManager dataCacheManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,8 @@ public class ExploreFragment extends Fragment  implements PlaceItemAdapter.OnIte
         placeModel = new ViewModelProvider(requireActivity()).get(PlaceModel.class);
         allPlaces = new ArrayList<>();
         recyclerView = view.findViewById(R.id.allPlaces);
+
+        dataCacheManager = new DataCacheManager(getContext());
 
         int spanCount = 2; // Number of columns in the grid
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
@@ -110,9 +115,15 @@ public class ExploreFragment extends Fragment  implements PlaceItemAdapter.OnIte
         placeAdapter.updateList(filteredList);
     }
     private void fetchPlaces(){
-        List<Place> cachedData = placeModel.getData().getValue();
+        List<Place>cachedData =  dataCacheManager.loadData();
+        List<Place> cachedDataModel =  placeModel.getData().getValue();
         if(cachedData != null && !cachedData.isEmpty()){
             allPlaces.addAll(cachedData);
+            placeAdapter.notifyDataSetChanged();
+            initialPlaces = new ArrayList<>(allPlaces);
+        }
+        else if(cachedDataModel != null && !cachedDataModel.isEmpty()){
+            allPlaces.addAll(cachedDataModel);
             placeAdapter.notifyDataSetChanged();
             initialPlaces = new ArrayList<>(allPlaces);
         }
@@ -122,6 +133,7 @@ public class ExploreFragment extends Fragment  implements PlaceItemAdapter.OnIte
                 public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
                     if(response.isSuccessful() && response.body() != null){
                         allPlaces.addAll(response.body());
+                        placeModel.setData(allPlaces);
                         placeAdapter.notifyDataSetChanged();
                         initialPlaces = new ArrayList<>(allPlaces);
                     }
