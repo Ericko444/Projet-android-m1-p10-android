@@ -42,4 +42,5 @@
     <string name="vibrate_sub">Activer des vibrations quand vous recevez des notifications</string>
     <string name="app_version">Version de l\'application</string>
     <string name="explore">Explorer</string>
+    <string name="username_label">Pseudo</string>
 </resources>
