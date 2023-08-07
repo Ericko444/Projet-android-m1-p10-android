@@ -17,7 +17,8 @@
         android:textStyle="bold"/>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/loggedInScreen">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -168,8 +169,18 @@
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-
-
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/acc_logged_in"
+        android:gravity="center"
+        android:padding="60dp"
+        android:visibility="gone">
+        <Button
+            android:id="@+id/acc_login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_btn_label" />
+    </LinearLayout>
 
 </LinearLayout>
