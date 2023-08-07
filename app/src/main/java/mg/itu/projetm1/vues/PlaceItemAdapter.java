@@ -89,6 +89,12 @@ public class PlaceItemAdapter extends RecyclerView.Adapter<PlaceItemAdapter.Plac
         return data.size();
     }
 
+    public void updateList(ArrayList<Place> newList) {
+        data.clear();
+        data.addAll(newList);
+        notifyDataSetChanged();
+    }
+
     public class PlaceItemHolder extends RecyclerView.ViewHolder {
         TextView textView;
 
