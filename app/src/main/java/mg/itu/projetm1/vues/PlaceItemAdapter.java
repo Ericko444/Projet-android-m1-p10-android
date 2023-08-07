@@ -29,10 +29,23 @@ public class PlaceItemAdapter extends RecyclerView.Adapter<PlaceItemAdapter.Plac
     ArrayList<Place> data;
     Context context;
 
+    private static final int VIEW_TYPE_ITEM = 0;
+    private static final int VIEW_TYPE_PLACEHOLDER = 1;
+
+    private boolean isLoading;
+
     private RecommendationItemClickListener recommendationItemClickListener;
     private ParProvinceItemClickListener parProvinceItemClickListener;
 
     private OnItemClickListener listener;
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        isLoading = loading;
+    }
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -73,20 +86,33 @@ public class PlaceItemAdapter extends RecyclerView.Adapter<PlaceItemAdapter.Plac
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return isLoading && position == getItemCount() - 1
+                ? VIEW_TYPE_PLACEHOLDER
+                : VIEW_TYPE_ITEM;
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull PlaceItemHolder holder, int position) {
-        Place currentItem = data.get(position);
-        List<Review> reviews =  currentItem.getReviews();
-        double moyenneReviews = getMoyenneReviews(reviews);
-        holder.rating.setRating((float) moyenneReviews);
-        String imageUrl = currentItem.getImages().size() > 0 ? currentItem.getImages().get(0).getImage() : "https://cdn.statically.io/gh/Ericko444/CDN/c04f6bc6/Tourisme/default_image.png";
-        holder.textView.setText(currentItem.getTitle());
-        holder.province.setText(currentItem.getProvince().getName());
-        Picasso.get().load(imageUrl).placeholder(R.drawable.default_image).fit().centerCrop().into(holder.imageView);
+        if (getItemViewType(position) == VIEW_TYPE_ITEM) {
+            Place currentItem = data.get(position);
+            List<Review> reviews =  currentItem.getReviews();
+            double moyenneReviews = getMoyenneReviews(reviews);
+            holder.rating.setRating((float) moyenneReviews);
+            String imageUrl = currentItem.getImages().size() > 0 ? currentItem.getImages().get(0).getImage() : "https://cdn.statically.io/gh/Ericko444/CDN/c04f6bc6/Tourisme/default_image.png";
+            holder.textView.setText(currentItem.getTitle());
+            holder.province.setText(currentItem.getProvince().getName());
+            Picasso.get().load(imageUrl).placeholder(R.drawable.default_image).fit().centerCrop().into(holder.imageView);
+        }
+        else{
+            Log.d("NOT FETCHED YET", "OOOOHH");
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return isLoading ? data.size() + 1 : data.size();
     }
 
     public void updateList(ArrayList<Place> newList) {
