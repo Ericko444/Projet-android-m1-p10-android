@@ -44,7 +44,7 @@ import retrofit2.Response;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemClickListener{
+public class HomeFragment extends Fragment implements PlaceItemAdapter.RecommendationItemClickListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,18 +56,13 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
     private String mParam2;
 
     private RecyclerView recyclerViewRecommendation;
-    private RecyclerView recyclerViewParProvince;
 
     private ArrayList<Place> dataRecommendations;
-    private ArrayList<Place> dataParProvince;
 
     private PlaceModel placeModelRecom;
 
-    private PlaceModel placeModelProv;
     private LinearLayoutManager linearLayoutManager;
-    private LinearLayoutManager linearLayoutManager2;
     private PlaceItemAdapter placeItemAdapterRecommendation;
-    private PlaceItemAdapter placeItemAdapterParProvince;
     SessionManager sessionManager;
 
     public HomeFragment() {
@@ -96,7 +91,6 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         placeModelRecom = new ViewModelProvider(this).get(PlaceModel.class);
-        placeModelProv = new ViewModelProvider(this).get(PlaceModel.class);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -108,25 +102,16 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
                              Bundle savedInstanceState) {
         sessionManager = new SessionManager(getActivity());
         dataRecommendations = new ArrayList<Place>();
-        dataParProvince = new ArrayList<Place>();
         placeModelRecom = new ViewModelProvider(requireActivity()).get(PlaceModel.class);
-        placeModelProv = new ViewModelProvider(requireActivity()).get(PlaceModel.class);
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerViewRecommendation = rootView.findViewById(R.id.recommendations);
-        recyclerViewParProvince = rootView.findViewById(R.id.par_province);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        linearLayoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewRecommendation.setLayoutManager(linearLayoutManager);
-        recyclerViewParProvince.setLayoutManager(linearLayoutManager2);
         placeItemAdapterRecommendation = new PlaceItemAdapter(dataRecommendations, getActivity());
-        placeItemAdapterParProvince = new PlaceItemAdapter(dataParProvince, getActivity());
+        placeItemAdapterRecommendation.setRecommendationItemClickListener(HomeFragment.this);
         recyclerViewRecommendation.setAdapter(placeItemAdapterRecommendation);
-        placeItemAdapterRecommendation.setOnItemClickListener(HomeFragment.this);
-        recyclerViewParProvince.setAdapter(placeItemAdapterParProvince);
-        placeItemAdapterParProvince.setOnItemClickListener(HomeFragment.this);
 
         fetchPlacesRecommendation();
-        fetchPlacesParProvince();
         initGreetings(rootView);
         setImageListener(rootView);
         setImageProfile(rootView);
@@ -227,35 +212,23 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
         }
     }
 
-    private void fetchPlacesParProvince(){
-        List<Place> cachedData = placeModelProv.getData().getValue();
-        if(cachedData != null && !cachedData.isEmpty()){
-            dataParProvince.addAll(cachedData);
-            placeItemAdapterParProvince.notifyDataSetChanged();
-        }
-        else{
-            RetrofitClient.getRetrofitClient().getPlacesParProvince().enqueue(new Callback<List<Place>>() {
-                @Override
-                public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
-                    if(response.isSuccessful() && response.body() != null){
-                        dataParProvince.addAll(response.body());
-                        placeModelProv.setData(dataParProvince);
-                        placeItemAdapterParProvince.notifyDataSetChanged();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<Place>> call, Throwable t) {
-                    Toast.makeText(getActivity(), "Error "+t.getMessage(), Toast.LENGTH_LONG).show();
-                    Log.d("ERROR", "onFailure: "+t.getMessage());
-                }
-            });
-        }
-
-    }
+//    @Override
+//    public void onItemClick(int position) {
+//        Intent detailIntent = new Intent(getActivity(), PlaceDetailActivity.class);
+//        Place clickedItem = placeModelRecom.getData().getValue().get(position);
+//
+//        detailIntent.putExtra("title", clickedItem.getTitle());
+//        detailIntent.putExtra("desc", clickedItem.getDesc());
+//        detailIntent.putExtra("images", (Serializable) clickedItem.getImages());
+//        detailIntent.putExtra("tags", (Serializable) clickedItem.getTags());
+//        detailIntent.putExtra("reviews", (Serializable) clickedItem.getReviews());
+//        detailIntent.putExtra("videos", (Serializable) clickedItem.getVideos());
+//
+//        startActivity(detailIntent);
+//    }
 
     @Override
-    public void onItemClick(int position) {
+    public void onRecommendationItemClick(int position) {
         Intent detailIntent = new Intent(getActivity(), PlaceDetailActivity.class);
         Place clickedItem = placeModelRecom.getData().getValue().get(position);
 
@@ -268,4 +241,5 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.OnItemCli
 
         startActivity(detailIntent);
     }
+
 }

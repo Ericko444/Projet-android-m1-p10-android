@@ -3,12 +3,27 @@ package mg.itu.projetm1.vues;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import mg.itu.projetm1.R;
+import mg.itu.projetm1.models.Place;
+import mg.itu.projetm1.models.PlaceModel;
+import mg.itu.projetm1.session.SessionManager;
+import mg.itu.projetm1.utils.RetrofitClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +40,14 @@ public class SavedFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView recyclerView;
+
+    private List<Place> placeList;
+
+    RecyclerView.Adapter adapter;
+
+    PlaceModel placeModel;
 
     public SavedFragment() {
         // Required empty public constructor
@@ -51,6 +74,7 @@ public class SavedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        placeModel = new ViewModelProvider(this).get(PlaceModel.class);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -60,7 +84,45 @@ public class SavedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        SessionManager sessionManager = new SessionManager(getContext());
+        int id = (Integer) sessionManager.getUserDetail().get("ID");
+
+        Log.d("USERIDKKK", String.valueOf(id));
+
+        placeList = new ArrayList<>();
+        placeModel = new ViewModelProvider(requireActivity()).get(PlaceModel.class);
+        View rootView = inflater.inflate(R.layout.fragment_saved, container, false);
+        recyclerView = rootView.findViewById(R.id.saved_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new SavedItemAdapter(placeList, getContext());
+        recyclerView.setAdapter(adapter);
+        fetchFavorites();
+        return rootView;
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_saved, container, false);
+    }
+
+    private void fetchFavorites(){
+        List<Place> cachedData = placeModel.getData().getValue();
+        if(cachedData != null && !cachedData.isEmpty()){
+            placeList.addAll(cachedData);
+            adapter.notifyDataSetChanged();
+        }else{
+            RetrofitClient.getRetrofitClient().getPlacesRecommendation().enqueue(new Callback<List<Place>>() {
+                @Override
+                public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
+                    if(response.isSuccessful() && response.body() != null){
+                        placeList.addAll(response.body());
+                        placeModel.setData(placeList);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Place>> call, Throwable t) {
+                    Toast.makeText(getActivity(), "Error "+t.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.d("ERROR", "onFailure: "+t.getMessage());
+                }
+            });
+        }
     }
 }

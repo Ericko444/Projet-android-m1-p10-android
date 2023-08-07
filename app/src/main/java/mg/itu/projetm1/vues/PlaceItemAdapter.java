@@ -3,6 +3,7 @@ package mg.itu.projetm1.vues;
 import static mg.itu.projetm1.vues.PlaceDetailActivity.getMoyenneReviews;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,14 +29,34 @@ public class PlaceItemAdapter extends RecyclerView.Adapter<PlaceItemAdapter.Plac
     ArrayList<Place> data;
     Context context;
 
+    private RecommendationItemClickListener recommendationItemClickListener;
+    private ParProvinceItemClickListener parProvinceItemClickListener;
+
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
+    public interface RecommendationItemClickListener {
+        void onRecommendationItemClick(int position);
+    }
+
+    public interface ParProvinceItemClickListener {
+        void onParProvinceItemClick(int position);
+    }
+
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setRecommendationItemClickListener(RecommendationItemClickListener recommendationItemClickListener) {
+        this.recommendationItemClickListener = recommendationItemClickListener;
+    }
+
+    public void setParProvinceItemClickListener(ParProvinceItemClickListener parProvinceItemClickListener) {
+        this.parProvinceItemClickListener = parProvinceItemClickListener;
     }
 
     public PlaceItemAdapter(ArrayList<Place> data, Context context) {
@@ -87,10 +108,16 @@ public class PlaceItemAdapter extends RecyclerView.Adapter<PlaceItemAdapter.Plac
 
                 @Override
                 public void onClick(View view) {
-                    if (listener != null) {
+                    if (recommendationItemClickListener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
+                            recommendationItemClickListener.onRecommendationItemClick(position);
+                        }
+                    }
+                    else if(parProvinceItemClickListener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            parProvinceItemClickListener.onParProvinceItemClick(position);
                         }
                     }
                 }
