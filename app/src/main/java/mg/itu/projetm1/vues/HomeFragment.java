@@ -188,8 +188,12 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.Recommend
     }
 
     private void fetchPlacesRecommendation(){
+        placeItemAdapterRecommendation.setLoading(true);
+        placeItemAdapterRecommendation.notifyDataSetChanged();
         List<Place> cachedData = placeModelRecom.getData().getValue();
         if(cachedData != null && !cachedData.isEmpty()){
+            placeItemAdapterRecommendation.setLoading(false);
+            placeItemAdapterRecommendation.notifyDataSetChanged();
             dataRecommendations.addAll(cachedData);
             placeItemAdapterRecommendation.notifyDataSetChanged();
         }else{
@@ -197,14 +201,17 @@ public class HomeFragment extends Fragment implements PlaceItemAdapter.Recommend
                 @Override
                 public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
                     if(response.isSuccessful() && response.body() != null){
+                        dataRecommendations.clear();
                         dataRecommendations.addAll(response.body());
                         placeModelRecom.setData(dataRecommendations);
                         placeItemAdapterRecommendation.notifyDataSetChanged();
                     }
+                    placeItemAdapterRecommendation.setLoading(false);
                 }
 
                 @Override
                 public void onFailure(Call<List<Place>> call, Throwable t) {
+                    placeItemAdapterRecommendation.setLoading(false);
                     Toast.makeText(getActivity(), "Error "+t.getMessage(), Toast.LENGTH_LONG).show();
                     Log.d("ERROR", "onFailure: "+t.getMessage());
                 }

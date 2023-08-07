@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +28,7 @@ import java.util.List;
 
 import mg.itu.projetm1.R;
 import mg.itu.projetm1.models.Place;
+import mg.itu.projetm1.models.PlaceModel;
 import mg.itu.projetm1.session.SessionManager;
 import mg.itu.projetm1.utils.RetrofitClient;
 import retrofit2.Call;
@@ -43,17 +45,26 @@ public class ExploreFragment extends Fragment  implements PlaceItemAdapter.OnIte
     private TextInputLayout searchInputLayout;
     private EditText inputSearch;
 
+    private PlaceModel placeModel;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        placeModel = new ViewModelProvider(this).get(PlaceModel.class);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
+        placeModel = new ViewModelProvider(requireActivity()).get(PlaceModel.class);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        placeModel = new ViewModelProvider(requireActivity()).get(PlaceModel.class);
         allPlaces = new ArrayList<>();
         recyclerView = view.findViewById(R.id.allPlaces);
 
@@ -89,6 +100,7 @@ public class ExploreFragment extends Fragment  implements PlaceItemAdapter.OnIte
     }
 
     private void filterList(String query) {
+
         ArrayList<Place> filteredList = new ArrayList<>();
         for (Place place : initialPlaces) {
             if (place.getTitle().toLowerCase().contains(query.toLowerCase())) {
@@ -98,22 +110,31 @@ public class ExploreFragment extends Fragment  implements PlaceItemAdapter.OnIte
         placeAdapter.updateList(filteredList);
     }
     private void fetchPlaces(){
-        RetrofitClient.getRetrofitClient().getAllPlaces().enqueue(new Callback<List<Place>>() {
-            @Override
-            public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
-                if(response.isSuccessful() && response.body() != null){
-                    allPlaces.addAll(response.body());
-                    placeAdapter.notifyDataSetChanged();
-                    initialPlaces = new ArrayList<>(allPlaces);
+        List<Place> cachedData = placeModel.getData().getValue();
+        if(cachedData != null && !cachedData.isEmpty()){
+            allPlaces.addAll(cachedData);
+            placeAdapter.notifyDataSetChanged();
+            initialPlaces = new ArrayList<>(allPlaces);
+        }
+        else{
+            RetrofitClient.getRetrofitClient().getAllPlaces().enqueue(new Callback<List<Place>>() {
+                @Override
+                public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
+                    if(response.isSuccessful() && response.body() != null){
+                        allPlaces.addAll(response.body());
+                        placeAdapter.notifyDataSetChanged();
+                        initialPlaces = new ArrayList<>(allPlaces);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<Place>> call, Throwable t) {
-                Toast.makeText(getActivity(), "Error "+t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d("ERROR", "onFailure: "+t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<List<Place>> call, Throwable t) {
+                    Toast.makeText(getActivity(), "Error "+t.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.d("ERROR", "onFailure: "+t.getMessage());
+                }
+            });
+        }
+
     }
 
     @Override
